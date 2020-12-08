@@ -17,9 +17,8 @@ namespace ledger {
 
 namespace {
 
-void HandleBinding(
-    sql::Statement* statement,
-    const type::DBCommandBinding& binding) {
+void HandleBinding(sql::Statement* statement,
+                   const type::DBCommandBinding& binding) {
   if (!statement) {
     return;
   }
@@ -101,13 +100,17 @@ type::DBRecordPtr CreateRecord(
 
 }  // namespace
 
-LedgerDatabaseImpl::LedgerDatabaseImpl(const base::FilePath& path) :
-    db_path_(path),
-    initialized_(false) {
+LedgerDatabaseImpl::LedgerDatabaseImpl(const base::FilePath& path)
+    : db_path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 LedgerDatabaseImpl::~LedgerDatabaseImpl() = default;
+
+bool LedgerDatabaseImpl::OpenInMemoryForTesting() {
+  DCHECK(!db_.is_open());
+  return db_.OpenInMemory();
+}
 
 void LedgerDatabaseImpl::RunTransaction(
     type::DBTransactionPtr transaction,
@@ -149,10 +152,8 @@ void LedgerDatabaseImpl::RunTransaction(
 
     switch (command->type) {
       case type::DBCommand::Type::INITIALIZE: {
-        status = Initialize(
-            transaction->version,
-            transaction->compatible_version,
-            command_response);
+        status = Initialize(transaction->version,
+                            transaction->compatible_version, command_response);
         break;
       }
       case type::DBCommand::Type::READ: {
@@ -168,9 +169,7 @@ void LedgerDatabaseImpl::RunTransaction(
         break;
       }
       case type::DBCommand::Type::MIGRATE: {
-        status = Migrate(
-            transaction->version,
-            transaction->compatible_version);
+        status = Migrate(transaction->version, transaction->compatible_version);
         break;
       }
       case type::DBCommand::Type::VACUUM: {
@@ -235,9 +234,8 @@ type::DBCommandResponse::Status LedgerDatabaseImpl::Initialize(
 
     initialized_ = true;
     memory_pressure_listener_.reset(new base::MemoryPressureListener(
-        FROM_HERE,
-        base::Bind(&LedgerDatabaseImpl::OnMemoryPressure,
-        base::Unretained(this))));
+        FROM_HERE, base::Bind(&LedgerDatabaseImpl::OnMemoryPressure,
+                              base::Unretained(this))));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
@@ -288,8 +286,8 @@ type::DBCommandResponse::Status LedgerDatabaseImpl::Run(
   }
 
   if (!statement.Run()) {
-    BLOG(0, "DB Run error: " << db_.GetErrorMessage() <<
-        " (" << db_.GetErrorCode() << ")");
+    BLOG(0, "DB Run error: " << db_.GetErrorMessage() << " ("
+                             << db_.GetErrorCode() << ")");
     return type::DBCommandResponse::Status::COMMAND_ERROR;
   }
 
@@ -307,8 +305,7 @@ type::DBCommandResponse::Status LedgerDatabaseImpl::Read(
     return type::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
-  sql::Statement statement(
-      db_.GetUniqueStatement(command->command.c_str()));
+  sql::Statement statement(db_.GetUniqueStatement(command->command.c_str()));
 
   for (auto const& binding : command->bindings) {
     HandleBinding(&statement, *binding.get());
