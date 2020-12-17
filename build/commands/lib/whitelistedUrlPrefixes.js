@@ -37,4 +37,8 @@ module.exports = [
   'https://variations.brave.com/seed',
   'https://brave-today-cdn.brave.com/', // Brave Today (production)
   'https://pcdn.brave.com/', // Brave's Privacy-focused CDN
+  'https://brave-today-cdn.bravesoftware.com/', // Brave Today (staging)
+  'https://pcdn.bravesoftware.com/', // Brave's Privacy-focused CDN (staging)
+  'https://brave-today-cdn.brave.software/', // Brave Today (dev)
+  'https://pcdn.brave.software/', // Brave's Privacy-focused CDN (dev)
 ]
