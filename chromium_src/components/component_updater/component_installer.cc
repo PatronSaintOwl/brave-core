@@ -24,7 +24,6 @@ void ComponentInstaller::Register(ComponentUpdateService* cus,
     "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
     "ggkkehgbnfjpeggfpleeakpidbkibbmn",  // Crowd Deny
-    "jflookgnkcckhobaglndicnbbgbonegd",  // Safety Tips
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
 #if defined(OS_ANDROID)
