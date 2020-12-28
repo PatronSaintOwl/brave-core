@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 2ce3bb2ed29a1149d2495f1f12f33fb7805d30cb..8f50f601cafecf15692a63caa57ef1995b8255ae 100644
+index 2ce3bb2ed29a1149d2495f1f12f33fb7805d30cb..efe2daded7e0ccf32bdf41333c1d0f5c6caf6984 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -64,6 +64,7 @@ static_library("browser") {
-     "//services/preferences/public/cpp",
-     "//url",
-   ]
-+  deps += [ "//brave/components/content_settings/core/browser" ]
+@@ -81,6 +81,7 @@ static_library("browser") {
+       "//components/policy/core/browser",
+       "//third_party/blink/public/common:headers",
+     ]
++    sources += brave_components_content_settings_core_browser_sources deps += brave_components_content_settings_core_browser_deps
+   }
  
-   if (is_android) {
-     deps += [ "//media" ]
+   configs += [

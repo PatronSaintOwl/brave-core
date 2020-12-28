@@ -137,7 +137,6 @@ source_set("browser_process") {
     "//brave/components/brave_wallet/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
-    "//brave/components/content_settings/core/browser",
     "//brave/components/crypto_dot_com/browser/buildflags",
     "//brave/components/gemini/browser/buildflags",
     "//brave/components/greaselion/browser/buildflags",

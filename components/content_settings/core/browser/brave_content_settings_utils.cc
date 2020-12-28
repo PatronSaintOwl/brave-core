@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/notreached.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/optional.h"
 #include "base/values.h"
@@ -15,17 +16,6 @@
 #include "url/gurl.h"
 
 namespace {
-
-const std::vector<ContentSettingsType> kShieldsContentSettingsTypes {
-    ContentSettingsType::BRAVE_ADS,
-    ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-    ContentSettingsType::BRAVE_TRACKERS,
-    ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-    ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-    ContentSettingsType::BRAVE_SHIELDS,
-    ContentSettingsType::BRAVE_REFERRERS,
-    ContentSettingsType::BRAVE_COOKIES
-};
 
 bool CanPatternBeConvertedToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
@@ -58,7 +48,17 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
 namespace content_settings {
 
 const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes() {
-  return kShieldsContentSettingsTypes;
+  static base::NoDestructor<const std::vector<ContentSettingsType>>
+      kShieldsContentSettingsTypes({
+          ContentSettingsType::BRAVE_ADS,
+          ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+          ContentSettingsType::BRAVE_TRACKERS,
+          ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          ContentSettingsType::BRAVE_SHIELDS,
+          ContentSettingsType::BRAVE_REFERRERS,
+          ContentSettingsType::BRAVE_COOKIES});
+  return *kShieldsContentSettingsTypes;
 }
 
 std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
@@ -96,11 +96,11 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
   return std::string();
 }
 
-bool IsShieldsContentSettingsType(
-    const ContentSettingsType& content_type) {
-  return std::find(kShieldsContentSettingsTypes.begin(),
-                   kShieldsContentSettingsTypes.end(),
-                   content_type) != kShieldsContentSettingsTypes.end();
+bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
+  const auto& shieldsContentSettingsTypes = GetShieldsContentSettingsTypes();
+  return std::find(shieldsContentSettingsTypes.begin(),
+                   shieldsContentSettingsTypes.end(),
+                   content_type) != shieldsContentSettingsTypes.end();
 }
 
 base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(

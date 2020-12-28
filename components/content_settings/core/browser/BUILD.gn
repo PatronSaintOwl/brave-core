@@ -1,28 +1,26 @@
-source_set("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10624 is resolved
-  check_includes = false
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("browser_unit_tests") {
+  testonly = true
   if (!is_ios) {
     sources = [
-      "brave_content_settings_default_provider.cc",
-      "brave_content_settings_default_provider.h",
-      "brave_content_settings_pref_provider.cc",
-      "brave_content_settings_pref_provider.h",
-      "brave_content_settings_utils.cc",
-      "brave_content_settings_utils.h",
+      "brave_content_settings_pref_provider_unittest.cc",
+      "brave_content_settings_utils_unittest.cc",
     ]
-
     deps = [
       "//base",
-      "//brave/common:network_constants",
       "//brave/common:pref_names",
-      "//brave/common:shield_exceptions",
       "//brave/components/brave_shields/common",
-      "//brave/components/content_settings/core/common",
-      # see https://github.com/brave/brave-browser/issues/10624 above
-      # "//components/content_settings/core/browser",
+      "//chrome/test:test_support",
+      "//components/content_settings/core/browser",
       "//components/content_settings/core/common",
-      "//components/prefs",
-      "//net",
+      "//components/content_settings/core/test:test_support",
+      "//content/test:test_support",
+      "//services/preferences/public/cpp",
+      "//testing/gtest:gtest",
       "//url",
     ]
   }
