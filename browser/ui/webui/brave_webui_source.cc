@@ -1060,6 +1060,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "useTokenBalance", IDS_BRAVE_REWARDS_CHECKOUT_USE_TOKEN_BALANCE },
         { "updated", IDS_BRAVE_REWARDS_CHECKOUT_UPDATED },
       }
+    }
   };
   // clang-format on
   AddLocalizedStringsBulk(source, localized_strings[name]);
