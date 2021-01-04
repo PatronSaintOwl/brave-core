@@ -14,7 +14,7 @@ import completedImage from './assets/tour_completed.svg'
 
 export const root = styled.div`
   font-family: var(--brave-font-heading);
-  height: 100%;
+  min-height: 388px;
   text-align: center;
   display: grid;
   grid-template-columns: 1fr;
@@ -27,6 +27,7 @@ export const root = styled.div`
     "nav";
 
   &.tour-wide {
+    min-height: 300px;
     padding: 0 20px;
     text-align: left;
     column-gap: 60px;
@@ -56,8 +57,9 @@ export const stepText = styled.div`
 `
 
 export const stepGraphic = styled.div`
+  text-align: center;
   grid-area: graphic;
-  margin: 10px 0;
+  margin: 10px 0 12px;
   background-repeat: no-repeat;
   background-position: center;
   background-sizing: contain;

@@ -27,6 +27,7 @@ interface Props extends RewardsExtension.ComponentProps {
 interface State {
   showSummary: boolean
   showRewardsTour: boolean
+  firstTimeSetup: boolean
   publisherKey: string | null
   refreshingPublisher: boolean
   publisherRefreshed: boolean
@@ -41,6 +42,7 @@ export class Panel extends React.Component<Props, State> {
     this.state = {
       showSummary: true,
       showRewardsTour: false,
+      firstTimeSetup: false,
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
@@ -655,11 +657,11 @@ export class Panel extends React.Component<Props, State> {
   }
 
   showOnboarding () {
-    const { showOnboarding } = this.props.rewardsPanelData
+    const { showOnboarding, parameters } = this.props.rewardsPanelData
 
     if (this.state.showRewardsTour) {
       const onDone = () => {
-        this.setState({ showRewardsTour: false })
+        this.setState({ showRewardsTour: false, firstTimeSetup: false })
       }
 
       const onClose = () => {
@@ -669,11 +671,26 @@ export class Panel extends React.Component<Props, State> {
         }
       }
 
+      const onAdsPerHourChanged = (adsPerHour: number) => {
+        // TODO
+      }
+
+      const onAcAmountChanged = (amount: number) => {
+        // TODO
+      }
+
       return (
+        // TODO
         <RewardsTourModal
-          rewardsEnabled={!showOnboarding}
-          onClose={onClose}
+          firstTimeSetup={this.state.firstTimeSetup}
+          adsPerHour={3}
+          acAmount={15}
+          acAmountOptions={[5, 15, 25, 50]}
+          exchangeRate={parameters.rate}
+          onAdsPerHourChanged={onAdsPerHourChanged}
+          onAcAmountChanged={onAcAmountChanged}
           onDone={onDone}
+          onClose={onClose}
         />
       )
     }
@@ -688,7 +705,7 @@ export class Panel extends React.Component<Props, State> {
 
     const onEnable = () => {
       this.actions.saveOnboardingResult('opted-in')
-      onTakeTour()
+      this.setState({ showRewardsTour: true, firstTimeSetup: true })
     }
 
     const onClose = () => {
