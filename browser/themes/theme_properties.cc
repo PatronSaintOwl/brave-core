@@ -44,6 +44,16 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
       return kLightToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 0.3f);
+    case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
+      return SkColorSetRGB(0xF3, 0xF3, 0xF5);
+    case BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE:
+      return SkColorSetRGB(0x49, 0x50, 0x57);
+    case BraveThemeProperties::COLOR_SIDEBAR_BORDER:
+      return SkColorSetRGB(0xD9, 0xDC, 0xDF);
+    case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
+      return SkColorSetRGB(0xE8, 0xE8, 0xE8);
+    case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
+      return SkColorSetRGB(0xE9, 0xE9, 0xF4);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kLightColorForTest;
     default:
@@ -86,6 +96,16 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
       return color_utils::AlphaBlend(kDarkToolbarIcon, kDarkToolbar, 0.3f);
+    case BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND:
+      return SkColorSetRGB(0x30, 0x34, 0x43);
+    case BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE:
+      return SkColorSetRGB(0xC2, 0xC4, 0xCF);
+    case BraveThemeProperties::COLOR_SIDEBAR_BORDER:
+      return SkColorSetRGB(0x3B, 0x3E, 0x4F);
+    case BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND:
+      return SkColorSetRGB(0x5E, 0x61, 0x75);
+    case BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR:
+      return SkColorSetRGB(0xE9, 0xE9, 0xF4);
     case BraveThemeProperties::COLOR_FOR_TEST:
       return BraveThemeProperties::kDarkColorForTest;
     default:
