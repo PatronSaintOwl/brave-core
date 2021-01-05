@@ -34,10 +34,12 @@ namespace {
 constexpr char kGoogleAuthPattern[] = "https://accounts.google.com/*";
 constexpr char kFirebasePattern[] = "https://[*.]firebaseapp.com/*";
 
+#if !defined(OS_ANDROID)
 // We need to clear this preference here instead of doing it in PrefProvider so
 // that we have a chance to migrate Shields' settings from old profiles.
 constexpr char kObsoletePluginsExceptionsPref[] =
     "profile.content_settings.exceptions.plugins";
+#endif
 
 const char kExpirationPath[] = "expiration";
 const char kLastModifiedPath[] = "last_modified";
@@ -173,13 +175,19 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // Now carry on with any other migration that we might need.
   MigrateShieldsSettingsV1ToV2();
 
+#if !defined(OS_ANDROID)
   // Finally clean this up now that Shields' settings have been migrated.
   prefs_->ClearPref(kObsoletePluginsExceptionsPref);
+#endif
 }
 
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
   const base::DictionaryValue* plugins_dictionary =
+#if !defined(OS_ANDROID)
       prefs_->GetDictionary(kObsoletePluginsExceptionsPref);
+#else
+      nullptr;
+#endif
   if (!plugins_dictionary)
     return;
 
