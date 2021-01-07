@@ -38,6 +38,9 @@ grit("static_resources") {
       ]
     }
   }
+  if (enable_tor) {
+    deps += [ "//brave/components/tor/resources", ]
+  }
 
   defines = [
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",

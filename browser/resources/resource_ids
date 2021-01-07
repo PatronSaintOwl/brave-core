@@ -100,4 +100,11 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-ipfs/ipfs.grd": {
     "includes": [45500],
   },
+  "brave/components/tor/resources/tor_static_resources.grd": {
+    "includes": [45750]
+  },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-tor_internals/tor_internals.grd": {
+    "includes": [46000],
+  },
 }
