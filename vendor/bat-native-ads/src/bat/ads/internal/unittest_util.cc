@@ -765,10 +765,8 @@ void MockPrefs(
 
 base::Time TimeFromDateString(
     const std::string& date) {
-  const std::string utc_date = date + " 23:59:59.999 +00:00";
-
   base::Time time;
-  if (!base::Time::FromString(utc_date.c_str(), &time)) {
+  if (!base::Time::FromString(date.c_str(), &time)) {
     return base::Time();
   }
 
