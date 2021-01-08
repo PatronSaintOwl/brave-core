@@ -103,6 +103,10 @@ export class Panel extends React.Component<Props, State> {
       this.props.actions.onShouldShowOnboarding(showOnboarding)
     })
 
+    chrome.braveRewards.getPrefs((prefs) => {
+      this.props.actions.onGetPrefs(prefs)
+    })
+
     this.actions.fetchPromotions()
 
     chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),

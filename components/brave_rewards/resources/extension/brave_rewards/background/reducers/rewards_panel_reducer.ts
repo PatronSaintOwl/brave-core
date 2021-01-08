@@ -491,6 +491,18 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       }
       break
     }
+    case types.ON_GET_PREFS: {
+      state = {
+        ...state
+      }
+      // TODO
+      break
+    }
+    case types.UPDATE_PREFS: {
+      // TODO: Do we need to update the state stuff as well? Probably?
+      chrome.braveRewards.updatePrefs(action.payload)
+      break
+    }
   }
   return state
 }

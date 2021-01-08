@@ -1230,5 +1230,76 @@ BraveRewardsSaveOnboardingResultFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetPrefsFunction::~BraveRewardsGetPrefsFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context()));
+
+  if (!rewards_service)
+    return RespondNow(Error("Rewards service is not initialized"));
+
+  rewards_service->GetAutoContributeProperties(base::BindRepeating(
+      &BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback,
+      this));
+
+  // TODO(zenparsing): There should be a way to listen for changes to all
+  // "rewards prefs". This means that we'll need to listen out for ads pref
+  // changes as well, which might be problematic, since the ads service does
+  // not currently support listening for those changes.
+
+  return RespondLater();
+}
+
+void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
+    ledger::type::AutoContributePropertiesPtr properties) {
+  base::Value prefs(base::Value::Type::DICTIONARY);
+  prefs.SetBoolKey("autoContributeEnabled", properties->enabled_contribute);
+  prefs.SetDoubleKey("autoContributeAmount", properties->amount);
+
+  auto* ads_service = AdsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context()));
+
+  if (ads_service) {
+    prefs.SetBoolKey("adsEnabled", ads_service->IsEnabled());
+    prefs.SetIntKey("adsPerHour",
+        static_cast<int>(ads_service->GetAdsPerHour()));
+  } else {
+    prefs.SetBoolKey("adsEnabled", false);
+    prefs.SetDoubleKey("adsPerHour", 0);
+  }
+
+  Respond(OneArgument(std::move(prefs)));
+}
+
+BraveRewardsUpdatePrefsFunction::~BraveRewardsUpdatePrefsFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsUpdatePrefsFunction::Run() {
+  auto params = brave_rewards::UpdatePrefs::Params::Create(*args_);
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  auto* profile = Profile::FromBrowserContext(browser_context());
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  auto* ads_service = AdsServiceFactory::GetForProfile(profile);
+
+  if (rewards_service) {
+    bool* ac_enabled = params->prefs.auto_contribute_enabled.get();
+    if (ac_enabled) rewards_service->SetAutoContributeEnabled(*ac_enabled);
+
+    double* ac_amount = params->prefs.auto_contribute_amount.get();
+    if (ac_amount) rewards_service->SetAutoContributionAmount(*ac_amount);
+  }
+
+  if (ads_service) {
+    bool* ads_enabled = params->prefs.ads_enabled.get();
+    if (ads_enabled) ads_service->SetEnabled(*ads_enabled);
+
+    int* ads_per_hour = params->prefs.ads_per_hour.get();
+    if (ads_per_hour) ads_service->SetAdsPerHour(*ads_per_hour);
+  }
+
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

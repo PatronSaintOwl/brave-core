@@ -1210,6 +1210,66 @@
             "name": "result"
           }
         ]
+      },
+      {
+        "name": "getPrefs",
+        "type": "function",
+        "description": "Gets rewards preferences for the current profile",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "type": "object",
+                "name": "prefs",
+                "properties": {
+                  "autoContributeEnabled": {
+                    "type": "boolean"
+                  },
+                  "autoContributeAmount": {
+                    "type": "number"
+                  },
+                  "adsEnabled": {
+                    "type": "boolean"
+                  },
+                  "adsPerHour": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "updatePrefs",
+        "type": "function",
+        "description": "Updates rewards preferences for the current profile",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "prefs",
+            "properties": {
+              "autoContributeEnabled": {
+                "type": "boolean",
+                "optional": true
+              },
+              "autoContributeAmount": {
+                "type": "number",
+                "optional": true
+              },
+              "adsEnabled": {
+                "type": "boolean",
+                "optional": true
+              },
+              "adsPerHour": {
+                "type": "integer",
+                "optional": true
+              }
+            }
+          }
+        ]
       }
     ]
   }
