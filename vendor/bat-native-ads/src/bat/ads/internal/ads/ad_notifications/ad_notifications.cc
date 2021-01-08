@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "brave/common/brave_channel_info.h"
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
