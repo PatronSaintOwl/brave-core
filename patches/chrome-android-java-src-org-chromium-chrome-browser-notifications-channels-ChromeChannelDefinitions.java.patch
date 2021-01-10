@@ -1,4 +1,3 @@
-
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b27802159df9007 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
@@ -9,7 +8,7 @@ index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b278021
       */
 -    static final int CHANNELS_VERSION = 2;
 +    static final int CHANNELS_VERSION = 3;
-
+ 
      private static class LazyHolder {
          private static ChromeChannelDefinitions sInstance = new ChromeChannelDefinitions();
 @@ -64,6 +64,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
@@ -23,7 +22,7 @@ index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b278021
 @@ -92,7 +93,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          String WEBRTC_CAM_AND_MIC = "webrtc_cam_and_mic";
      }
-
+ 
 -    @StringDef({ChannelGroupId.GENERAL, ChannelGroupId.SITES})
 +    @StringDef({BraveChannelDefinitions.ChannelGroupId.BRAVE_ADS, ChannelGroupId.GENERAL, ChannelGroupId.SITES})
      @Retention(RetentionPolicy.SOURCE)
@@ -32,7 +31,7 @@ index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b278021
 @@ -121,6 +122,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
-
+ 
 +            BraveChannelDefinitions.addBraveChannels(map, startup);
              map.put(ChannelId.BROWSER,
                      PredefinedChannel.create(ChannelId.BROWSER,
