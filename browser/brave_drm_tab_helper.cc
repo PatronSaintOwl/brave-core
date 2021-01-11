@@ -17,6 +17,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+#include "extensions/common/constants.h"
 
 using component_updater::ComponentUpdateService;
 
@@ -24,10 +25,8 @@ namespace {
 bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   std::vector<std::string> component_ids;
   component_ids = cus->GetComponentIDs();
-  return std::find(component_ids.begin(),
-                   component_ids.end(),
-                   BraveDrmTabHelper::kWidevineComponentId) !=
-                       component_ids.end();
+  return std::find(component_ids.begin(), component_ids.end(),
+                   widevine_extension_id) != component_ids.end();
 }
 #if !defined(OS_LINUX)
 content::WebContents* GetActiveWebContents() {
@@ -43,10 +42,6 @@ void ReloadIfActive(content::WebContents* web_contents) {
 #endif
 
 }  // namespace
-
-// static
-const char BraveDrmTabHelper::kWidevineComponentId[] =
-    "oimompecagnajdejgnnjijobebaeigek";
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
     : WebContentsObserver(contents),
@@ -92,7 +87,7 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
 
 void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
   if (event == ComponentUpdateService::Observer::Events::COMPONENT_UPDATED &&
-      id == kWidevineComponentId) {
+      id == widevine_extension_id) {
 #if defined(OS_LINUX)
     // Ask restart instead of reloading. Widevine is only usable after
     // restarting on linux.
